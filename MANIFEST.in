@@ -4,6 +4,9 @@ include src/AutoPyObjPtr.i
 include src/HTSeq/_HTSeq.pxd
 include src/HTSeq/_HTSeq.pyx
 include src/HTSeq/__init__.py
+include src/HTSeq/_HTSeq.c
+include src/StepVector.py
+include src/StepVector_wrap.cpp
 include VERSION
 prune example_data
 prune test
