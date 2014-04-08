@@ -1,4 +1,9 @@
 include src/step_vector.h
+include src/StepVector.i
+include src/AutoPyObjPtr.i
+include src/HTSeq/_HTSeq.pxd
+include src/HTSeq/_HTSeq.pyx
+include src/HTSeq/__init__.py
 include VERSION
 prune example_data
 prune test
