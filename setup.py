@@ -28,7 +28,22 @@ except ImportError:
    sys.exit( 1 )
    
 numpy_include_dir = os.path.join( os.path.dirname( numpy.__file__ ), 'core', 'include' )
- 
+
+
+try:
+    from Cython.Build import cythonize
+    cython_ext = '.pyx'
+except ImportError:
+    cython_ext = '.c'
+    def cythonize(arg):
+        return arg
+
+ext_modules = cythonize([
+    Extension( 'HTSeq._StepVector',
+        ['src/StepVector.i'], swig_opts=['-c++', '-Wall'], extra_compile_args=['-w'] ),
+    Extension( 'HTSeq._HTSeq',
+        ['src/HTSeq/_HTSeq' + cython_ext], include_dirs=[numpy_include_dir], extra_compile_args=['-w'] )
+])
 
 setup( name = 'HTSeq',
        version = file("VERSION").readline().rstrip(),
@@ -47,20 +62,16 @@ setup( name = 'HTSeq',
           'Programming Language :: Python'
        ],
        requires = [ 'numpy', 'python (>=2.5, <3.0)' ],
-       
-       py_modules = [ 
+
+       py_modules = [
           'HTSeq._HTSeq_internal', 
           'HTSeq.StepVector',
           'HTSeq._version',
           'HTSeq.scripts.qa',
           'HTSeq.scripts.count'
        ],
-       ext_modules = [ 
-          Extension( 'HTSeq._HTSeq', 
-             ['src/_HTSeq.c'], include_dirs=[numpy_include_dir], extra_compile_args=['-w'] ),
-          Extension( 'HTSeq._StepVector', 
-             ['src/StepVector_wrap.cxx'], extra_compile_args=['-w'] ),
-       ],
+       ext_modules = ext_modules,
+
        scripts = [
           'scripts/htseq-qa',
           'scripts/htseq-count',
