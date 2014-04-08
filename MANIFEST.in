@@ -8,6 +8,7 @@ include src/HTSeq/_HTSeq.c
 include src/StepVector.py
 include src/StepVector_wrap.cpp
 include VERSION
+graft doc
 prune example_data
 prune test
 exclude todo.txt
